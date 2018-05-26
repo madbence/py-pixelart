@@ -61,7 +61,6 @@ class BaseTileRenderer(TileRenderer):
 
             void main() {
                 color = texture2D(tex, Tex);
-                color = vec4(Tex.xy, 0, 1);
             }
         ''')
         vao = glGenVertexArrays(1)

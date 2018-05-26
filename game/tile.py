@@ -8,10 +8,11 @@ from game.shader import create_shader
 
 
 class TileRenderer:
-    def __init__(self, shader, vao, texture):
+    def __init__(self, shader, vao, texture, screen):
         self._shader = shader
         self._vao = vao
         self._texture = texture
+        self._screen = screen
 
     def draw(self):
         glUseProgram(self._shader)
@@ -26,7 +27,7 @@ class TileRenderer:
 
 
 class BaseTileRenderer(TileRenderer):
-    def __init__(self):
+    def __init__(self, screen):
         shader = create_shader(vertex_shader_src='''
             #version 440 core
 
@@ -85,5 +86,5 @@ class BaseTileRenderer(TileRenderer):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 32, 17, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
 
-        super(BaseTileRenderer, self).__init__(shader, vao, tex)
+        super(BaseTileRenderer, self).__init__(shader, vao, tex, screen)
 

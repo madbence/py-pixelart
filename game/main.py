@@ -3,6 +3,7 @@ import glfw
 from OpenGL.GL import *
 
 from game.tile import BaseTileRenderer
+from game.screen import Screen
 
 
 def create_window(width, height, fullscreen):
@@ -37,8 +38,9 @@ def main():
             glfw.set_window_should_close(window, True)
 
     window = create_window(800, 600, fullscreen=False)
+    screen = Screen(800, 600, 2)
 
-    tile_renderer = BaseTileRenderer()
+    tile_renderer = BaseTileRenderer(screen)
 
     glfw.set_key_callback(window, key_callback)
 

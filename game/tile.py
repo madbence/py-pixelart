@@ -7,6 +7,12 @@ from PIL import Image
 from game.shader import create_shader
 
 
+class Tile:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
 class TileRenderer:
     def __init__(self, shader, vao, texture, screen):
         self._shader = shader
@@ -14,14 +20,16 @@ class TileRenderer:
         self._texture = texture
         self._screen = screen
 
-    def draw(self):
+    def draw(self, tile):
         glUseProgram(self._shader)
         glBindVertexArray(self._vao)
         glBindTexture(GL_TEXTURE_2D, self._texture)
-        mx = np.array([[1, 0, 0, 0],
-                       [0, 1, 0, 0],
+        (tx, ty) = self._screen.get_position(tile.x, tile.y)
+        (sx, sy) = self._screen.get_tile_scale()
+        mx = np.array([[sx, 0, 0, 0],
+                       [0, sy, 0, 0],
                        [0, 0, 1, 0],
-                       [0, 0, 0, 1]], 'f')
+                       [tx, ty, 0, 1]], 'f')
         glUniformMatrix4fv(0, 1, False, mx)
         glDrawArrays(GL_TRIANGLES, 0, 6)
 

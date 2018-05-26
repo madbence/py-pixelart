@@ -2,7 +2,7 @@ import glfw
 
 from OpenGL.GL import *
 
-from game.tile import BaseTileRenderer
+from game.tile import BaseTileRenderer, Tile
 from game.screen import Screen
 
 
@@ -41,6 +41,7 @@ def main():
     screen = Screen(800, 600, 2)
 
     tile_renderer = BaseTileRenderer(screen)
+    tiles = [Tile(x, y) for x in range(-5, 5) for y in range(-5, 5)]
 
     glfw.set_key_callback(window, key_callback)
 
@@ -49,8 +50,9 @@ def main():
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     while not glfw.window_should_close(window):
-        tile_renderer.draw()
         glClear(GL_COLOR_BUFFER_BIT)
+        for tile in tiles:
+            tile_renderer.draw(tile)
         glfw.swap_buffers(window)
         glfw.poll_events()
 

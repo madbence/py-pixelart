@@ -16,3 +16,6 @@ class Screen:
         dx = (TILE_WIDTH + TILE_OFFSET_X) / 2 * self.pixel_size_x
         dy = (TILE_HEIGHT + TILE_OFFSET_Y) / 2 * self.pixel_size_y
         return (x * dx + y * dx, y * dy + x * -dy)
+
+    def get_tile_scale(self):
+        return (TILE_WIDTH * self.pixel_size_x, TILE_HEIGHT * self.pixel_size_y)

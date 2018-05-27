@@ -76,9 +76,16 @@ def main():
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+    last = 0
+    dt = .02
     while not glfw.window_should_close(window):
         glClear(GL_COLOR_BUFFER_BIT)
-        camera.update()
+
+        time = glfw.get_time()
+        while last < time:
+            camera.update()
+            last += dt
+
         for tile in tiles:
             tile_renderer.draw(tile)
         for wall in walls:

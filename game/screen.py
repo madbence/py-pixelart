@@ -20,13 +20,12 @@ TILE_MAP = dict([
 
 
 class Screen:
-    def __init__(self, camera, w, h, s):
+    def __init__(self, camera, w, h):
         self.camera = camera
         self.width = w
         self.height = h
-        self.scale = s
-        self.pixel_size_x = 2 / w * s
-        self.pixel_size_y = 2 / h * s
+        self.pixel_size_x = 2 / w
+        self.pixel_size_y = 2 / h
 
     def get_position(self, x, y, t):
         tile = TILE_MAP[t]

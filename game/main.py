@@ -3,7 +3,7 @@ import glfw
 from OpenGL.GL import *
 
 from game.tile import BaseTileRenderer, Tile
-from game.screen import Screen
+from game.screen import Screen, TILE_MAP
 from game.camera import Camera
 
 
@@ -57,8 +57,10 @@ def main():
     camera = Camera()
     screen = Screen(camera, 800, 600, 2)
 
-    tile_renderer = BaseTileRenderer(screen)
+    tile_renderer = BaseTileRenderer(screen, 'grid.png', TILE_MAP['floor'])
+    wall_renderer = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_nw'])
     tiles = [Tile(x, y) for x in range(-5, 5) for y in range(-5, 5)]
+    walls = [Tile(x, 0, 'wall_nw') for x in range(0, 5)]
 
     glfw.set_key_callback(window, key_callback)
 
@@ -70,6 +72,8 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT)
         for tile in tiles:
             tile_renderer.draw(tile)
+        for wall in walls:
+            wall_renderer.draw(wall)
         glfw.swap_buffers(window)
         glfw.poll_events()
 

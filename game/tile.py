@@ -36,7 +36,7 @@ class TileRenderer:
 
 
 class BaseTileRenderer(TileRenderer):
-    def __init__(self, screen):
+    def __init__(self, screen, texture_name, tile_info):
         shader = create_shader(vertex_shader_src='''
             #version 440 core
 
@@ -84,7 +84,7 @@ class BaseTileRenderer(TileRenderer):
         glEnableVertexAttribArray(1)
         glVertexAttribPointer(1, 2, GL_FLOAT, False, 16, ctypes.c_void_p(8))
 
-        img = Image.open('grid.png').transpose(Image.FLIP_TOP_BOTTOM)
+        img = Image.open(texture_name).transpose(Image.FLIP_TOP_BOTTOM)
         img_data = np.fromstring(img.tobytes(), np.uint8)
 
         glBindTexture(GL_TEXTURE_2D, tex)
@@ -92,7 +92,7 @@ class BaseTileRenderer(TileRenderer):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 32, 17, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tile_info.width, tile_info.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
 
         super(BaseTileRenderer, self).__init__(shader, vao, tex, screen)
 

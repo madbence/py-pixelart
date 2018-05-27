@@ -43,13 +43,13 @@ def main():
             if key == 47 and mods == 0:
                 camera.zoom = min(9, max(1, camera.zoom - 1))
             if key == 65 and mods == 0:
-                camera.x -= .1
+                camera.move(-.1, 0)
             if key == 68 and mods == 0:
-                camera.x += .1
+                camera.move(.1, 0)
             if key == 83 and mods == 0:
-                camera.y -= .1
+                camera.move(0, -.1)
             if key == 87 and mods == 0:
-                camera.y += .1
+                camera.move(0, .1)
 
     window = create_window(800, 600, fullscreen=False)
     camera = Camera()
@@ -68,6 +68,7 @@ def main():
 
     while not glfw.window_should_close(window):
         glClear(GL_COLOR_BUFFER_BIT)
+        camera.update()
         for tile in tiles:
             tile_renderer.draw(tile)
         for wall in walls:

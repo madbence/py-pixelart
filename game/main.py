@@ -4,6 +4,7 @@ from OpenGL.GL import *
 
 from game.tile import BaseTileRenderer, Tile
 from game.screen import Screen
+from game.camera import Camera
 
 
 def create_window(width, height, fullscreen):
@@ -34,11 +35,27 @@ def main():
     def key_callback(window, key, scancode, action, mods):
         print('key_callback', key, scancode, action, mods)
 
+        zoom_levels = [s/2 for s in range(1, 9)]
+
         if key == 256:
             glfw.set_window_should_close(window, True)
+        if action == 1 or action == 2:
+            if key == 61 and mods == 1:
+                camera.zoom = zoom_levels[min(len(zoom_levels) - 1, zoom_levels.index(camera.zoom) + 1)]
+            if key == 47 and mods == 0:
+                camera.zoom = zoom_levels[max(0, zoom_levels.index(camera.zoom) - 1)]
+            if key == 65 and mods == 0:
+                camera.x -= .1
+            if key == 68 and mods == 0:
+                camera.x += .1
+            if key == 83 and mods == 0:
+                camera.y -= .1
+            if key == 87 and mods == 0:
+                camera.y += .1
 
     window = create_window(800, 600, fullscreen=False)
-    screen = Screen(800, 600, 2)
+    camera = Camera()
+    screen = Screen(camera, 800, 600, 2)
 
     tile_renderer = BaseTileRenderer(screen)
     tiles = [Tile(x, y) for x in range(-5, 5) for y in range(-5, 5)]

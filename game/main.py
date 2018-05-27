@@ -42,14 +42,24 @@ def main():
                 camera.zoom = min(9, max(1, camera.zoom + 1))
             if key == 47 and mods == 0:
                 camera.zoom = min(9, max(1, camera.zoom - 1))
+        if action == 1:
             if key == 65 and mods == 0:
-                camera.move(-.1, 0)
+                camera.move(-.02, 0)
             if key == 68 and mods == 0:
-                camera.move(.1, 0)
+                camera.move(.02, 0)
             if key == 83 and mods == 0:
-                camera.move(0, -.1)
+                camera.move(0, -.02)
             if key == 87 and mods == 0:
-                camera.move(0, .1)
+                camera.move(0, .02)
+        if action == 0:
+            if key == 65 and mods == 0:
+                camera.move(.02, 0)
+            if key == 68 and mods == 0:
+                camera.move(-.02, 0)
+            if key == 83 and mods == 0:
+                camera.move(0, .02)
+            if key == 87 and mods == 0:
+                camera.move(0, -.02)
 
     window = create_window(800, 600, fullscreen=False)
     camera = Camera()

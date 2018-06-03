@@ -7,6 +7,8 @@ from game.screen import Screen
 from game.sprite import create_sprite_renderer
 from game.camera import Camera
 
+from game.ecs import Entity, Transform, Sprite, Render, add_component
+
 
 def create_window(width, height, fullscreen):
     if not glfw.init():
@@ -67,7 +69,17 @@ def main():
     screen = Screen(camera, 800, 600)
 
     floor_renderer = create_sprite_renderer('floor')
-    tiles = [Tile(x, y, 0) for x in range(-5, 5) for y in range(-5, 5)]
+
+    renderer = Render(screen)
+    renderer.sprites['floor'] = floor_renderer
+
+    entities = []
+    for x in range(-5, 5):
+        for y in range(-5, 5):
+            entity = Entity()
+            add_component(entity, Transform(x, y, 0))
+            add_component(entity, Sprite('floor'))
+            entities.append(entity)
 
     glfw.set_key_callback(window, key_callback)
 
@@ -85,8 +97,8 @@ def main():
             camera.update()
             last += dt
 
-        for tile in tiles:
-            floor_renderer.render(screen, tile)
+        renderer.run(entities)
+
         glfw.swap_buffers(window)
         glfw.poll_events()
 

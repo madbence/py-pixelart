@@ -66,9 +66,16 @@ def main():
     screen = Screen(camera, 800, 600)
 
     tile_renderer = BaseTileRenderer(screen, 'grid.png', TILE_MAP['floor'])
-    wall_renderer = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_nw'])
+    wall_renderer_nw = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_nw'])
+    wall_renderer_se = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_se'])
+    wall_renderer_ne = BaseTileRenderer(screen, 'wall-ne.png', TILE_MAP['wall_ne'])
+    wall_renderer_sw = BaseTileRenderer(screen, 'wall-ne.png', TILE_MAP['wall_sw'])
     tiles = [Tile(x, y, 0) for x in range(-5, 5) for y in range(-5, 5)]
-    walls = [Tile(x, 1, 0) for x in range(-5, 5)]
+    walls_nw = [Tile(x, -5, 0) for x in range(-5, 5)]
+    walls_se = [Tile(x, 4, z) for x in range(-5, 5) for z in range(0, 2)]
+    walls_ne = [Tile(4, y, 0) for y in range(-5, 5)]
+    walls_sw = [Tile(-5, y, 0) for y in range(-5, 5)]
+    ceiling = Tile(0, 0, 1)
 
     glfw.set_key_callback(window, key_callback)
 
@@ -88,8 +95,15 @@ def main():
 
         for tile in tiles:
             tile_renderer.draw(tile)
-        for wall in walls:
-            wall_renderer.draw(wall)
+        for wall in walls_sw:
+            wall_renderer_sw.draw(wall)
+        for wall in walls_se:
+            wall_renderer_se.draw(wall)
+        for wall in walls_nw:
+            wall_renderer_nw.draw(wall)
+        for wall in walls_ne:
+            wall_renderer_ne.draw(wall)
+        tile_renderer.draw(ceiling)
         glfw.swap_buffers(window)
         glfw.poll_events()
 

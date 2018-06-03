@@ -8,9 +8,10 @@ from game.shader import create_shader
 
 
 class Tile:
-    def __init__(self, x, y):
+    def __init__(self, x, y, z):
         self.x = x
         self.y = y
+        self.z = z
 
 
 class TileRenderer:
@@ -25,7 +26,7 @@ class TileRenderer:
         glUseProgram(self._shader)
         glBindVertexArray(self._vao)
         glBindTexture(GL_TEXTURE_2D, self._texture)
-        (tx, ty) = self._screen.get_position(tile.x, tile.y, self._tile_info)
+        (tx, ty) = self._screen.get_position(tile.x, tile.y, tile.z, self._tile_info)
         (sx, sy) = self._screen.get_tile_scale(self._tile_info)
         mx = np.array([[sx, 0, 0, 0],
                        [0, sy, 0, 0],

@@ -1,25 +1,8 @@
-class TileInfo:
-    def __init__(self, width, height, offset_x=0, offset_y=0):
-        self.width = width
-        self.height = height
-        self.offset_x = offset_x
-        self.offset_y = offset_y
-
-
-def _describe(name, **kwargs):
-    return (name, TileInfo(**kwargs))
 
 
 SPACING_X = 32
 SPACING_Y = 16
 
-TILE_MAP = dict([
-    _describe('floor', width=32, height=17),
-    _describe('wall_nw', width=17, height=25, offset_x=-1),
-    _describe('wall_se', width=17, height=25, offset_x=15, offset_y=8),
-    _describe('wall_ne', width=17, height=25, offset_x=15),
-    _describe('wall_sw', width=17, height=25, offset_x=-1, offset_y=8),
-])
 
 
 class Screen:

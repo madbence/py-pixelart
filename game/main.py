@@ -2,8 +2,9 @@ import glfw
 
 from OpenGL.GL import *
 
-from game.tile import BaseTileRenderer, Tile
-from game.screen import Screen, TILE_MAP
+from game.tile import Tile
+from game.screen import Screen
+from game.sprite import create_sprite_renderer
 from game.camera import Camera
 
 
@@ -65,17 +66,8 @@ def main():
     camera = Camera()
     screen = Screen(camera, 800, 600)
 
-    tile_renderer = BaseTileRenderer(screen, 'grid.png', TILE_MAP['floor'])
-    wall_renderer_nw = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_nw'])
-    wall_renderer_se = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_se'])
-    wall_renderer_ne = BaseTileRenderer(screen, 'wall-ne.png', TILE_MAP['wall_ne'])
-    wall_renderer_sw = BaseTileRenderer(screen, 'wall-ne.png', TILE_MAP['wall_sw'])
+    floor_renderer = create_sprite_renderer('floor')
     tiles = [Tile(x, y, 0) for x in range(-5, 5) for y in range(-5, 5)]
-    walls_nw = [Tile(x, -5, 0) for x in range(-5, 5)]
-    walls_se = [Tile(x, 4, z) for x in range(-5, 5) for z in range(0, 2)]
-    walls_ne = [Tile(4, y, 0) for y in range(-5, 5)]
-    walls_sw = [Tile(-5, y, 0) for y in range(-5, 5)]
-    ceiling = Tile(0, 0, 1)
 
     glfw.set_key_callback(window, key_callback)
 
@@ -94,16 +86,7 @@ def main():
             last += dt
 
         for tile in tiles:
-            tile_renderer.draw(tile)
-        for wall in walls_sw:
-            wall_renderer_sw.draw(wall)
-        for wall in walls_se:
-            wall_renderer_se.draw(wall)
-        for wall in walls_nw:
-            wall_renderer_nw.draw(wall)
-        for wall in walls_ne:
-            wall_renderer_ne.draw(wall)
-        tile_renderer.draw(ceiling)
+            floor_renderer.render(screen, tile)
         glfw.swap_buffers(window)
         glfw.poll_events()
 

@@ -8,25 +8,25 @@ from game.shader import create_shader
 
 
 class Tile:
-    def __init__(self, x, y, t = 'floor'):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.t = t
 
 
 class TileRenderer:
-    def __init__(self, shader, vao, texture, screen):
+    def __init__(self, shader, vao, texture, screen, tile_info):
         self._shader = shader
         self._vao = vao
         self._texture = texture
         self._screen = screen
+        self._tile_info = tile_info
 
     def draw(self, tile):
         glUseProgram(self._shader)
         glBindVertexArray(self._vao)
         glBindTexture(GL_TEXTURE_2D, self._texture)
-        (tx, ty) = self._screen.get_position(tile.x, tile.y, tile.t)
-        (sx, sy) = self._screen.get_tile_scale(tile.t)
+        (tx, ty) = self._screen.get_position(tile.x, tile.y, self._tile_info)
+        (sx, sy) = self._screen.get_tile_scale(self._tile_info)
         mx = np.array([[sx, 0, 0, 0],
                        [0, sy, 0, 0],
                        [0, 0, 1, 0],
@@ -94,5 +94,5 @@ class BaseTileRenderer(TileRenderer):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
 
-        super(BaseTileRenderer, self).__init__(shader, vao, tex, screen)
+        super(BaseTileRenderer, self).__init__(shader, vao, tex, screen, tile_info)
 

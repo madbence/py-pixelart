@@ -27,15 +27,13 @@ class Screen:
         self.pixel_size_x = 2 / w
         self.pixel_size_y = 2 / h
 
-    def get_position(self, x, y, t):
-        tile = TILE_MAP[t]
+    def get_position(self, x, y, info):
         dx = SPACING_X / 2 * self.pixel_size_x * self.camera.zoom
         dy = SPACING_Y / 2 * self.pixel_size_y * self.camera.zoom
-        ox = tile.offset_x * self.pixel_size_x * self.camera.zoom
-        oy = tile.offset_y * self.pixel_size_y * self.camera.zoom
+        ox = info.offset_x * self.pixel_size_x * self.camera.zoom
+        oy = info.offset_y * self.pixel_size_y * self.camera.zoom
         return (x * dx + y * dx - self.camera.x + ox, y * dy + x * -dy - self.camera.y + oy)
 
-    def get_tile_scale(self, t):
-        tile = TILE_MAP[t]
-        return (tile.width * self.pixel_size_x * self.camera.zoom,
-                tile.height * self.pixel_size_y * self.camera.zoom)
+    def get_tile_scale(self, info):
+        return (info.width * self.pixel_size_x * self.camera.zoom,
+                info.height * self.pixel_size_y * self.camera.zoom)

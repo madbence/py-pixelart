@@ -68,7 +68,7 @@ def main():
     tile_renderer = BaseTileRenderer(screen, 'grid.png', TILE_MAP['floor'])
     wall_renderer = BaseTileRenderer(screen, 'wall-nw.png', TILE_MAP['wall_nw'])
     tiles = [Tile(x, y) for x in range(-5, 5) for y in range(-5, 5)]
-    walls = [Tile(x, 1, 'wall_nw') for x in range(0, 5)]
+    walls = [Tile(x, 1) for x in range(-5, 5)]
 
     glfw.set_key_callback(window, key_callback)
 

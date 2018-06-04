@@ -32,16 +32,11 @@ class SpriteRenderer:
         self._texture = texture
         self._sprite_info = sprite_info
 
-    def render(self, screen, tile):
+    def render(self, screen, camera, zoom, tile):
         glUseProgram(self._shader)
         glBindVertexArray(self._vao)
         glBindTexture(GL_TEXTURE_2D, self._texture)
-        (tx, ty) = screen.get_position(tile.x, tile.y, tile.z, self._sprite_info)
-        (sx, sy) = screen.get_tile_scale(self._sprite_info)
-        mx = np.array([[sx, 0, 0, 0],
-                       [0, sy, 0, 0],
-                       [0, 0, 1, 0],
-                       [tx, ty, 0, 1]], 'f')
+        mx = screen.transform(camera, zoom, tile.x, tile.y, tile.z, self._sprite_info)
         glUniformMatrix4fv(0, 1, False, mx)
         glDrawArrays(GL_TRIANGLES, 0, 6)
 

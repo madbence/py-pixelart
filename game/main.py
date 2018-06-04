@@ -5,12 +5,13 @@ from OpenGL.GL import *
 from game.tile import Tile
 from game.screen import Screen
 from game.sprite import create_sprite_renderer
-from game.camera import Camera
 
 from game.ecs import Entity
 from game.ecs.components.transformation import Transformation
 from game.ecs.components.sprite import Sprite
+from game.ecs.components.camera_target import CameraTarget
 from game.ecs.systems.renderer import Renderer
+from game.ecs.systems.camera_controller import CameraController
 from game.ecs import add_component
 
 
@@ -46,34 +47,40 @@ def main():
             glfw.set_window_should_close(window, True)
         if action == 1 or action == 2:
             if key == 61 and mods == 1:
-                camera.zoom = min(9, max(1, camera.zoom + 1))
+                camera_target.zoom = min(9, max(1, camera_target.zoom + 1))
             if key == 47 and mods == 0:
-                camera.zoom = min(9, max(1, camera.zoom - 1))
+                camera_target.zoom = min(9, max(1, camera_target.zoom - 1))
         if action == 1:
             if key == 65 and mods == 0:
-                camera.move(-.02, 0)
+                camera_target.dx[0] = .05
             if key == 68 and mods == 0:
-                camera.move(.02, 0)
+                camera_target.dx[1] = .05
             if key == 83 and mods == 0:
-                camera.move(0, -.02)
+                camera_target.dy[0] = .05
             if key == 87 and mods == 0:
-                camera.move(0, .02)
+                camera_target.dy[1] = .05
         if action == 0:
             if key == 65 and mods == 0:
-                camera.move(.02, 0)
+                camera_target.dx[0] = 0
             if key == 68 and mods == 0:
-                camera.move(-.02, 0)
+                camera_target.dx[1] = 0
             if key == 83 and mods == 0:
-                camera.move(0, .02)
+                camera_target.dy[0] = 0
             if key == 87 and mods == 0:
-                camera.move(0, -.02)
+                camera_target.dy[1] = 0
 
-    window = create_window(800, 600, fullscreen=False)
-    camera = Camera()
-    screen = Screen(camera, 800, 600)
+    camera = Entity()
+    camera_target = CameraTarget(2, 0, 0, 5, 30)
+    add_component(camera, camera_target)
+    add_component(camera, Transformation(0, 0, 0))
+    screen = Screen(800, 600)
 
-    renderer = Renderer(screen)
+    window = create_window(screen.width, screen.height, fullscreen=False)
+
+    renderer = Renderer(screen, camera)
     renderer.sprites['floor'] = create_sprite_renderer('floor')
+
+    camera_controller = CameraController()
 
     entities = []
     for x in range(-5, 5):
@@ -96,8 +103,8 @@ def main():
 
         time = glfw.get_time()
         while last < time:
-            camera.update()
             last += dt
+            camera_controller.run(camera, dt)
 
         renderer.run(entities)
 

@@ -7,7 +7,11 @@ from game.screen import Screen
 from game.sprite import create_sprite_renderer
 from game.camera import Camera
 
-from game.ecs import Entity, Transform, Sprite, Render, add_component
+from game.ecs import Entity
+from game.ecs.components.transformation import Transformation
+from game.ecs.components.sprite import Sprite
+from game.ecs.systems.renderer import Renderer
+from game.ecs import add_component
 
 
 def create_window(width, height, fullscreen):
@@ -68,16 +72,14 @@ def main():
     camera = Camera()
     screen = Screen(camera, 800, 600)
 
-    floor_renderer = create_sprite_renderer('floor')
-
-    renderer = Render(screen)
-    renderer.sprites['floor'] = floor_renderer
+    renderer = Renderer(screen)
+    renderer.sprites['floor'] = create_sprite_renderer('floor')
 
     entities = []
     for x in range(-5, 5):
         for y in range(-5, 5):
             entity = Entity()
-            add_component(entity, Transform(x, y, 0))
+            add_component(entity, Transformation(x, y, 0))
             add_component(entity, Sprite('floor'))
             entities.append(entity)
 

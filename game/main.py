@@ -2,7 +2,6 @@ import glfw
 
 from OpenGL.GL import *
 
-from game.tile import Tile
 from game.screen import Screen
 from game.sprite import create_sprite_renderer
 
